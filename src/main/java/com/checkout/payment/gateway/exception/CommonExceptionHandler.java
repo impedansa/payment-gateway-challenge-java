@@ -15,8 +15,19 @@ public class CommonExceptionHandler {
 
   @ExceptionHandler(EventProcessingException.class)
   public ResponseEntity<ErrorResponse> handleException(EventProcessingException ex) {
-    LOG.error("Exception happened", ex);
-    return new ResponseEntity<>(new ErrorResponse("Page not found"),
-        HttpStatus.NOT_FOUND);
+    ErrorResponse errorResponse = generateErrorResponse(ex);
+    return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(EventNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleException(EventNotFoundException ex) {
+    ErrorResponse errorResponse = generateErrorResponse(ex);
+    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+  }
+
+  private ErrorResponse generateErrorResponse(Exception ex) {
+    ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
+    LOG.error("Exception happened - {}", errorResponse);
+    return errorResponse;
   }
 }

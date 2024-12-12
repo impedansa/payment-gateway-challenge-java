@@ -1,0 +1,238 @@
+[
+  {
+    "testTitle": "Test case 1: Successful payment",
+    "postPaymentRequest": {
+      "card_number": "1234567890123451",
+      "expiry_month": 12,
+      "expiry_year": 2026,
+      "currency": "USD",
+      "amount": 100,
+      "cvv": "123"
+    },
+    "expectBankPaymentResponseCode": 200,
+    "expectBankPaymentResponseBody": {
+      "authorized": true,
+      "authorization_code": "123456"
+    },
+    "expectedPaymentResponse": {
+      "id": "83d96324-fce8-4ed1-8573-bb4bb3d2b9bb",
+      "status": "Authorized",
+      "cardNumberLastFour": "3451",
+      "expiryMonth": 12,
+      "expiryYear": 2026,
+      "currency": "USD",
+      "amount": 100
+    },
+    "expectPaymentException": false,
+    "expectErrorMessage": null,
+    "simulateException": null
+  },
+  {
+    "testTitle": "Test case 2: Unsuccessful payment",
+    "postPaymentRequest": {
+      "card_number": "1234567890123452",
+      "expiry_month": 12,
+      "expiry_year": 2026,
+      "currency": "USD",
+      "amount": 100,
+      "cvv": "123"
+    },
+    "expectBankPaymentResponseCode": 200,
+    "expectBankPaymentResponseBody": {
+      "authorized": false,
+      "authorization_code": null
+    },
+    "expectedPaymentResponse": {
+      "id": "83d96324-fce8-4ed1-8573-bb4bb3d2b9bb",
+      "status": "Declined",
+      "cardNumberLastFour": "3452",
+      "expiryMonth": 12,
+      "expiryYear": 2026,
+      "currency": "USD",
+      "amount": 100
+    },
+    "expectPaymentException": false,
+    "expectErrorMessage": null,
+    "simulateException": null
+  },
+  {
+    "testTitle": "Test case 3: Invalid card number",
+    "postPaymentRequest": {
+      "card_number": "1234",
+      "expiry_month": 12,
+      "expiry_year": 2026,
+      "currency": "USD",
+      "amount": 100,
+      "cvv": "123"
+    },
+    "expectBankPaymentResponseCode": 400,
+    "expectBankPaymentResponseBody": {
+      "authorized": false,
+      "authorization_code": null
+    },
+    "expectedPaymentResponse": {
+      "id": "83d96324-fce8-4ed1-8573-bb4bb3d2b9bb",
+      "status": "Rejected",
+      "cardNumberLastFour": "1234",
+      "expiryMonth": 12,
+      "expiryYear": 2026,
+      "currency": "USD",
+      "amount": 100
+    },
+    "expectPaymentException": false,
+    "expectErrorMessage": null,
+    "simulateException": null
+  },
+  {
+    "testTitle": "Test case 4: Invalid expiry month",
+    "postPaymentRequest": {
+      "card_number": "1234567890123452",
+      "expiry_month": 14,
+      "expiry_year": 2026,
+      "currency": "USD",
+      "amount": 100,
+      "cvv": "123"
+    },
+    "expectBankPaymentResponseCode": 400,
+    "expectBankPaymentResponseBody": {
+      "authorized": false,
+      "authorization_code": null
+    },
+    "expectedPaymentResponse": {
+      "id": "83d96324-fce8-4ed1-8573-bb4bb3d2b9bb",
+      "status": "Rejected",
+      "cardNumberLastFour": "3452",
+      "expiryMonth": 14,
+      "expiryYear": 2026,
+      "currency": "USD",
+      "amount": 100
+    },
+    "expectPaymentException": false,
+    "expectErrorMessage": null,
+    "simulateException": null
+  },
+  {
+    "testTitle": "Test case 5: Expired card",
+    "postPaymentRequest": {
+      "card_number": "1234567890123452",
+      "expiry_month": 1,
+      "expiry_year": 2020,
+      "currency": "USD",
+      "amount": 100,
+      "cvv": "123"
+    },
+    "expectBankPaymentResponseCode": 400,
+    "expectBankPaymentResponseBody": {
+      "authorized": false,
+      "authorization_code": null
+    },
+    "expectedPaymentResponse": {
+      "id": "83d96324-fce8-4ed1-8573-bb4bb3d2b9bb",
+      "status": "Rejected",
+      "cardNumberLastFour": "3452",
+      "expiryMonth": 1,
+      "expiryYear": 2020,
+      "currency": "USD",
+      "amount": 100
+    },
+    "expectPaymentException": false,
+    "expectErrorMessage": null,
+    "simulateException": null
+  },
+  {
+    "testTitle": "Test case 6: Invalid amount",
+    "postPaymentRequest": {
+      "card_number": "1234567890123452",
+      "expiry_month": 1,
+      "expiry_year": 2027,
+      "currency": "USD",
+      "amount": -1,
+      "cvv": "123"
+    },
+    "expectBankPaymentResponseCode": 400,
+    "expectBankPaymentResponseBody": {
+      "authorized": false,
+      "authorization_code": null
+    },
+    "expectedPaymentResponse": {
+      "id": "83d96324-fce8-4ed1-8573-bb4bb3d2b9bb",
+      "status": "Rejected",
+      "cardNumberLastFour": "3452",
+      "expiryMonth": 1,
+      "expiryYear": 2027,
+      "currency": "USD",
+      "amount": -1
+    },
+    "expectPaymentException": false,
+    "expectErrorMessage": null,
+    "simulateException": null
+  },
+  {
+    "testTitle": "Test case 7: Invalid cvv",
+    "postPaymentRequest": {
+      "card_number": "1234567890123452",
+      "expiry_month": 1,
+      "expiry_year": 2027,
+      "currency": "USD",
+      "amount": 100,
+      "cvv": "123456"
+    },
+    "expectBankPaymentResponseCode": 400,
+    "expectBankPaymentResponseBody": {
+      "authorized": false,
+      "authorization_code": null
+    },
+    "expectedPaymentResponse": {
+      "id": "83d96324-fce8-4ed1-8573-bb4bb3d2b9bb",
+      "status": "Rejected",
+      "cardNumberLastFour": "3452",
+      "expiryMonth": 1,
+      "expiryYear": 2027,
+      "currency": "USD",
+      "amount": 100
+    },
+    "expectPaymentException": false,
+    "expectErrorMessage": null,
+    "simulateException": null
+  },
+  {
+    "testTitle": "Test case 8: Error 500 in bank simulator service",
+    "postPaymentRequest": {
+      "card_number": "1234567890123452",
+      "expiry_month": 1,
+      "expiry_year": 2027,
+      "currency": "USD",
+      "amount": 100,
+      "cvv": "123"
+    },
+    "expectBankPaymentResponseCode": 500,
+    "expectBankPaymentResponseBody": {
+      "authorized": false,
+      "authorization_code": null
+    },
+    "expectedPaymentResponse": null,
+    "expectPaymentException": true,
+    "expectErrorMessage": "Bank simulator server error occurred",
+    "simulateException": "HttpServerErrorException"
+  },
+  {
+    "testTitle": "Test case 9: Connection refused / timeout to bank simulator service",
+    "postPaymentRequest": {
+      "card_number": "1234567890123452",
+      "expiry_month": 1,
+      "expiry_year": 2027,
+      "currency": "USD",
+      "amount": 100,
+      "cvv": "123"
+    },
+    "expectBankPaymentResponseCode": 500,
+    "expectBankPaymentResponseBody": {
+      "authorized": false,
+      "authorization_code": null
+    },
+    "expectedPaymentResponse": null,
+    "expectPaymentException": true,
+    "expectErrorMessage": "Bank simulator connection error occurred",
+    "simulateException": "ResourceAccessException"
+  }
+]

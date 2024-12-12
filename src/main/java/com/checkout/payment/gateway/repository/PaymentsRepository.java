@@ -1,7 +1,9 @@
 package com.checkout.payment.gateway.repository;
 
+import com.checkout.payment.gateway.enums.PaymentStatus;
 import com.checkout.payment.gateway.model.PostPaymentResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
@@ -15,8 +17,8 @@ public class PaymentsRepository {
     payments.put(payment.getId(), payment);
   }
 
-  public Optional<PostPaymentResponse> get(UUID id) {
-    return Optional.ofNullable(payments.get(id));
+  public Optional<PostPaymentResponse> findByIdAndStatusIn(UUID id, List<PaymentStatus> allowedStatus) {
+    return Optional.ofNullable(payments.get(id))
+        .filter(response -> allowedStatus.contains(response.getStatus()));
   }
-
 }

@@ -1,0 +1,248 @@
+{
+	"info": {
+		"_postman_id": "b4cf38e4-6e07-46de-9a89-7dbeb41dd74f",
+		"name": "payment-gateway-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10340929"
+	},
+	"item": [
+		{
+			"name": "Payment - Get By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{payment-gateway-service-url}}/payment/{{payment-id}}",
+					"host": [
+						"{{payment-gateway-service-url}}"
+					],
+					"path": [
+						"payment",
+						"{{payment-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payment - Process (Authorized)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response JSON",
+							"let responseData = pm.response.json();",
+							"",
+							"// Set the 'id' value as an environment variable",
+							"pm.environment.set(\"payment-id\", responseData.id);",
+							"",
+							"// Optionally log the value to console for verification",
+							"console.log(\"Set payment-id:\", responseData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"card_number\": \"2222405343248877\",\n    \"expiry_month\": 4,\n    \"expiry_year\": 2025,\n    \"currency\": \"GBP\",\n    \"amount\": 100,\n    \"cvv\": \"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{payment-gateway-service-url}}/payment",
+					"host": [
+						"{{payment-gateway-service-url}}"
+					],
+					"path": [
+						"payment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payment - Process (Declined)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response JSON",
+							"let responseData = pm.response.json();",
+							"",
+							"// Set the 'id' value as an environment variable",
+							"pm.environment.set(\"payment-id\", responseData.id);",
+							"",
+							"// Optionally log the value to console for verification",
+							"console.log(\"Set payment-id:\", responseData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"card_number\": \"2222405343248112\",\n    \"expiry_month\": 1,\n    \"expiry_year\": 2026,\n    \"currency\": \"USD\",\n    \"amount\": 60000,\n    \"cvv\": \"456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{payment-gateway-service-url}}/payment",
+					"host": [
+						"{{payment-gateway-service-url}}"
+					],
+					"path": [
+						"payment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payment - Process (Rejected)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response JSON",
+							"let responseData = pm.response.json();",
+							"",
+							"// Set the 'id' value as an environment variable",
+							"pm.environment.set(\"payment-id\", responseData.id);",
+							"",
+							"// Optionally log the value to console for verification",
+							"console.log(\"Set payment-id:\", responseData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"card_number\": \"2222405343248112\",\n    \"expiry_month\": 1,\n    \"expiry_year\": 2026,\n    \"currency\": \"USD\",\n    \"amount\": 60000,\n    \"cvv\": \"4568767\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{payment-gateway-service-url}}/payment",
+					"host": [
+						"{{payment-gateway-service-url}}"
+					],
+					"path": [
+						"payment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bank Simulator - Tester - False",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"card_number\": \"2222405343248112\",\n    \"expiry_date\": \"01/2026\",\n    \"currency\": \"USD\",\n    \"amount\": 60000,\n    \"cvv\": \"456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{bank-simulator-service-url}}/payments",
+					"host": [
+						"{{bank-simulator-service-url}}"
+					],
+					"path": [
+						"payments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bank Simulator - Tester - True",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"card_number\": \"2222405343248877\",\n    \"expiry_date\": \"04/2025\",\n    \"currency\": \"GBP\",\n    \"amount\": 100,\n    \"cvv\": \"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{bank-simulator-service-url}}/payments",
+					"host": [
+						"{{bank-simulator-service-url}}"
+					],
+					"path": [
+						"payments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payment - Actuator Info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{payment-gateway-service-url}}/actuator/info",
+					"host": [
+						"{{payment-gateway-service-url}}"
+					],
+					"path": [
+						"actuator",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payment - Actuator Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{payment-gateway-service-url}}/actuator/health",
+					"host": [
+						"{{payment-gateway-service-url}}"
+					],
+					"path": [
+						"actuator",
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
